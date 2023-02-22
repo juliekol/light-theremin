@@ -1,0 +1,37 @@
+<script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+<button id="play">Play</button>
+<button id="higher">Higher</button>
+<button id="lower">Lower</button>
+<script>
+
+  let pitchShift;
+  const url = "https://cdn.freesound.org/previews/163/163286_1102035-lq.mp3"; // use any valid audio file if this disappears over time...
+
+  const btn = document.querySelector("button#play");
+  btn.addEventListener("click", async () => {
+    await Tone.start();
+    const player = new Tone.Player({
+      url,
+      loop: true,
+      autostart: false,
+    });
+    await Tone.loaded();
+    pitchShift = new Tone
+      .PitchShift({pitch: 0})
+      .toDestination();
+    player.connect(pitchShift);
+    player.start();
+  });
+
+
+const btn2 = document.querySelector("button#higher");
+btn2.addEventListener("click", async () => {
+  pitchShift.pitch += 2;
+});
+
+const btn3 = document.querySelector("button#lower");
+btn3.addEventListener("click", async () => {
+  pitchShift.pitch -= 2;
+});
+
+</script>
