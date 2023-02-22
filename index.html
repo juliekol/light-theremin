@@ -1,0 +1,57 @@
+<script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+<video autoplay playsinline id="video" style="width:1; height:1;"></video>
+<canvas id="canvas" width="10" height="10"></canvas>
+<button id="play">Play</button>
+<span id="span"></span>
+<script>
+
+  let pitchShift;
+  const url = "https://cdn.freesound.org/previews/163/163286_1102035-lq.mp3";
+
+
+  let max = 0;
+  let min = 9999999;
+  const video = document.querySelector("video#video");  
+  const canvas = document.querySelector("canvas#canvas");
+  const span = document.querySelector("span#span");
+
+  const btn = document.querySelector("button#play");
+  btn.addEventListener("click", async () => {
+    video.srcObject = await navigator.mediaDevices.getUserMedia({video: true});
+    await new Promise(r => video.onloadedmetadata = r);
+
+    await Tone.start();
+    const player = new Tone.Player({
+      url,
+      loop: true,
+      autostart: false,
+    });
+    await Tone.loaded();
+    pitchShift = new Tone
+      .PitchShift({pitch: 0})
+      .toDestination();
+    player.connect(pitchShift);
+    player.start();
+
+    const ctx = canvas.getContext("2d");
+    requestAnimationFrame(function loop() {
+      ctx.drawImage(video, 0, 0, 10, 10);
+      let sum = 0;
+      for (let x=0; x<10; x++) {
+        for (let y=0; y<10; y++) {
+          const data = ctx.getImageData(x, y, 1, 1).data;
+          sum += data[0] + data[1] + data[2];
+        }
+      }
+      if (sum > max) max = sum;
+      if (sum < min && sum != 0) min = sum;
+      if (max > min) {
+        const num = (sum - min)/(max - min) * 20 - 10;
+        span.innerText = num.toString();
+        pitchShift.pitch = num;
+      }
+      requestAnimationFrame(loop);
+    });
+  });
+
+</script>
