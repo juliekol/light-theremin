@@ -1,0 +1,30 @@
+<video autoplay playsinline id="video" style="width:1; height:1;"></video>
+<canvas id="canvas" width="10" height="10"></canvas>
+<button id="show">Show</button>
+<span id="span"></span>
+<script>
+
+  const video = document.querySelector("video#video");  
+  const canvas = document.querySelector("canvas#canvas");
+  const span = document.querySelector("span#span");
+
+  const btn = document.querySelector("button#show");
+  btn.addEventListener("click", async () => {
+    video.srcObject = await navigator.mediaDevices.getUserMedia({video: true});
+    await new Promise(r => video.onloadedmetadata = r);
+    const ctx = canvas.getContext("2d");
+    requestAnimationFrame(function loop() {
+      ctx.drawImage(video, 0, 0, 10, 10);
+      let sum = 0;
+      for (let x=0; x<10; x++) {
+        for (let y=0; y<10; y++) {
+          const data = ctx.getImageData(x, y, 1, 1).data;
+          sum += data[0] + data[1] + data[2];
+        }
+      }
+      span.innerText = sum.toString();
+      requestAnimationFrame(loop);
+    });
+  });
+
+</script>
