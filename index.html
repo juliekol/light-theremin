@@ -1,7 +1,16 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body style="margin: 2vw;">
+
 <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
 <video autoplay playsinline id="video" style="width:1; height:1;"></video>
-<canvas id="canvas" width="10" height="10"></canvas>
-<button id="play">Play</button>
+<h1 style="text-align: center;">Light Theremin</h1>
+<canvas style="display: block; border: 1px solid black; width: 96vw; image-rendering: auto; image-rendering: crisp-edges; image-rendering: pixelated;" id="canvas" width="20" height="20"></canvas>
+<button style="margin: 10vw 23vw; width: 50vw; height: 50px; font-size: 25px;" id="play">Play</button>
 <span id="span"></span>
 <script>
 
@@ -35,10 +44,10 @@
 
     const ctx = canvas.getContext("2d");
     requestAnimationFrame(function loop() {
-      ctx.drawImage(video, 0, 0, 10, 10);
+      ctx.drawImage(video, 0, 0, 20, 20);
       let sum = 0;
-      for (let x=0; x<10; x++) {
-        for (let y=0; y<10; y++) {
+      for (let x=0; x<20; x++) {
+        for (let y=0; y<20; y++) {
           const data = ctx.getImageData(x, y, 1, 1).data;
           sum += data[0] + data[1] + data[2];
         }
@@ -55,3 +64,6 @@
   });
 
 </script>
+
+</body>
+</html>
