@@ -4,19 +4,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 
-<body style="margin: 2vw;">
+<body style="margin: 2vw; text-align: center;">
 
 <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
 <video autoplay playsinline id="video" style="width:1; height:1;"></video>
 <h1 style="text-align: center;">Light Theremin</h1>
 <canvas style="display: block; border: 1px solid black; width: 96vw; image-rendering: auto; image-rendering: crisp-edges; image-rendering: pixelated;" id="canvas" width="20" height="20"></canvas>
-<button style="margin: 10vw 23vw; width: 50vw; height: 50px; font-size: 25px;" id="play">Play</button>
+<button style="margin: 10vw 23vw 2vw 23vw; width: 50vw; height: 50px; font-size: 25px;" id="play">Play</button>
 <span id="span"></span>
 <script>
 
   let pitchShift;
-  const url = "https://cdn.freesound.org/previews/163/163286_1102035-lq.mp3";
 
+  const url = "https://cdn.freesound.org/previews/361/361269_69312-lq.mp3";
+  //const url = "https://cdn.pixabay.com/audio/2022/03/20/audio_c2901d1f16.mp3";
 
   let max = 0;
   let min = 9999999;
@@ -55,7 +56,7 @@
       if (sum > max) max = sum;
       if (sum < min && sum != 0) min = sum;
       if (max > min) {
-        const num = (sum - min)/(max - min) * 20 - 10;
+        const num = (sum - min)/(max - min) * 10 - 1;
         span.innerText = num.toString();
         pitchShift.pitch = num;
       }
